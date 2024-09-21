@@ -1,0 +1,6 @@
+name: Lobby
+version: '1.0'
+main: ru.laimcraft.lobby.Lobby
+api-version: '1.21'
+authors: [ LaimCraft ]
+website: https://github.com/LaimCraft/Proxy
