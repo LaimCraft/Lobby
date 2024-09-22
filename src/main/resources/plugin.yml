@@ -1,0 +1,19 @@
+name: Lobby
+version: '1.0'
+main: ru.laimcraft.lobby.Lobby
+api-version: '1.21'
+authors: [ LaimCraft ]
+website: https://github.com/LaimCraft/Lobby
+commands:
+  login:
+    aliases:
+      - l
+    usage: '/login <password>'
+  register:
+    aliases:
+      - reg
+    usage: '/register <password>'
+  changepassword:
+    aliases:
+      - ch
+    usage: '/changepassword <old_password> <new_password>'
