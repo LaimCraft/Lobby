@@ -44,12 +44,7 @@ public class RegisterCommand implements CommandExecutor {
                     default:
                         player.sendMessage(Message.registerSuccess);
                         Lobby.players.put(player.getName(), new AuthPlayer());
-                        try {
-                            Lobby.clientPack.auth(player.getName());
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        //SQLManager.add(player); Устарело
+                        SQLManager.add(player);
                         return true;}
             } login = MySQLAccounts.getLogin(player.getName());
             switch (login) {

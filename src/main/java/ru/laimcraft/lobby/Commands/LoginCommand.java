@@ -37,12 +37,7 @@ public class LoginCommand implements CommandExecutor {
                 case 1:
                     player.sendMessage(Message.auth);
                     Lobby.players.put(player.getName(), new AuthPlayer());
-                    try {
-                        Lobby.clientPack.auth(player.getName());
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    //SQLManager.add(player); Устарело
+                    SQLManager.add(player);
                     return true;
                 case 0, -1:
                     player.kick(Message.noPassword);
