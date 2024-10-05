@@ -1,5 +1,6 @@
 package ru.laimcraft.lobby.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -7,6 +8,7 @@ import org.bukkit.entity.Player;
 import ru.laimcraft.lobby.AuthPlayer;
 import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
+import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
 import ru.laimcraft.lobby.data.mysql.SQLManager;
 
@@ -45,6 +47,7 @@ public class RegisterCommand implements CommandExecutor {
                         player.sendMessage(Message.registerSuccess);
                         Lobby.players.put(player.getName(), new AuthPlayer());
                         SQLManager.add(player);
+                        Utils.sendTransferMessage(Lobby.instance, player, "vanilla");
                         return true;}
             } login = MySQLAccounts.getLogin(player.getName());
             switch (login) {

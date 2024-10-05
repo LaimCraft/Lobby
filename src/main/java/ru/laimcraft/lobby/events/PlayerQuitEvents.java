@@ -9,6 +9,7 @@ import ru.laimcraft.lobby.data.mysql.SQLManager;
 public class PlayerQuitEvents implements Listener {
     @EventHandler
     private void onPlayerQuitEvent(PlayerQuitEvent event) {
-        //Lobby.players.remove(event.getPlayer().getName());
+        event.setQuitMessage(null);
+        Lobby.players.remove(event.getPlayer().getName());
     }
 }

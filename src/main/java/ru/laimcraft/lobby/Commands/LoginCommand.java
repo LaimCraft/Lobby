@@ -1,5 +1,6 @@
 package ru.laimcraft.lobby.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.laimcraft.lobby.AuthPlayer;
 import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
+import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
 import ru.laimcraft.lobby.data.mysql.SQLManager;
 
@@ -38,6 +40,8 @@ public class LoginCommand implements CommandExecutor {
                     player.sendMessage(Message.auth);
                     Lobby.players.put(player.getName(), new AuthPlayer());
                     SQLManager.add(player);
+                    MySQLAccounts.authDateUpdate(player.getName());
+                    Utils.sendTransferMessage(Lobby.instance, player, "vanilla");
                     return true;
                 case 0, -1:
                     player.kick(Message.noPassword);

@@ -3,7 +3,7 @@ package ru.laimcraft.lobby.data.mysql;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import ru.laimcraft.lobby.Message;
-import ru.laimcraft.utils.Utils;
+import ru.laimcraft.lobby.Utils;
 
 import java.sql.*;
 import java.util.Date;
@@ -46,6 +46,18 @@ public class MySQLAccounts {
         } catch (SQLException ex) {
             Bukkit.getConsoleSender().sendMessage(Message.getError(ex.getMessage()));
             return -2;}}
+
+    public static boolean authDateUpdate(String login) {
+        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
+            Date date = new Date();
+            PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`accounts` SET `authdate` = ? WHERE login = ?;");
+            ps.setLong(1, date.getTime());
+            ps.setString(2, login);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            Bukkit.getConsoleSender().sendMessage("LaimCraft -> MySQL Error: " + ex.toString());
+            return false;}}
 
     /*public static String getLoginByLogin(String Login) {
         try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
