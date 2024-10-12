@@ -7,10 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.math.BigInteger;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -53,96 +52,121 @@ public class Utils {
         player.sendPluginMessage(plugin, "server:transfer", output.toByteArray());
     }
 
-    public static int getOnlinePillarsOfFortuneOld() throws Exception {
-        String ipAddress = "127.0.0.1"; // Replace with the server IP address
-        int port = 60421; // Default Minecraft port
 
-        Socket socket = new Socket(ipAddress, port);
+    public static int getOnlinePillarsOfFortune() {
+        String address = "127.0.0.1";
+        int port = 60421;
 
-        // Send query packet
-        OutputStream outputStream = socket.getOutputStream();
-        outputStream.write(new byte[] {
-                (byte) 0xFE, (byte) 0x01 // Query packet header
-        });
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(address, port), 5000);
+            socket.setSoTimeout(5000);
 
-        // Receive response packet
-        InputStream inputStream = socket.getInputStream();
-        byte[] responseBytes = new byte[1024];
-        int bytesRead = inputStream.read(responseBytes);
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            InputStream in = socket.getInputStream();
 
-        // Parse response packet
-        ByteBuffer responseBuffer = ByteBuffer.wrap(responseBytes, 0, bytesRead);
-        int protocolVersion = responseBuffer.getShort();
-        int onlinePlayers = responseBuffer.getShort();
+            // Отправляем handshake
+            ByteArrayOutputStream handshakeBytes = new ByteArrayOutputStream();
+            DataOutputStream handshake = new DataOutputStream(handshakeBytes);
+            writeVarInt(handshake, 0x00);
+            writeVarInt(handshake, 47);
+            writeString(handshake, address);
+            handshake.writeShort(port);
+            writeVarInt(handshake, 1);
+            writeVarInt(out, handshakeBytes.size());
+            out.write(handshakeBytes.toByteArray());
 
-        return onlinePlayers;
-    }
+            // Отправляем status request
+            out.writeByte(0x01);
+            out.writeByte(0x00);
 
-    public static int getOnlinePillarsOfFortune() throws Exception {
-        String ipAddress = "127.0.0.1"; // Replace with the server IP address
-        int port = 60421; // Default Minecraft port
-
-        Socket socket = new Socket(ipAddress, port);
-
-        // Send handshake packet
-        OutputStream outputStream = socket.getOutputStream();
-        outputStream.write(new byte[] {
-                (byte) 0x00, // VarInt: packet length
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, // VarInt: packet id (handshake)
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, // VarInt: protocol version
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, // VarInt: server address length
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, // VarInt: server address
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, // VarInt: server port
-                (byte) 0x01, // Byte: next state (status)
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 // VarInt: packet length
-        });
-
-        // Receive response packet
-        InputStream inputStream = socket.getInputStream();
-        byte[] responseBytes = new byte[1024];
-        int bytesRead = inputStream.read(responseBytes);
-
-        // Parse response packet
-        ByteBuffer responseBuffer = ByteBuffer.wrap(responseBytes, 0, bytesRead);
-        int packetId = readVarInt(responseBuffer);
-        if (packetId == 0x00) { // Response packet
-            int length = readVarInt(responseBuffer);
-            byte[] jsonBytes = new byte[length];
-            responseBuffer.get(jsonBytes);
-            String jsonString = new String(jsonBytes, StandardCharsets.UTF_8);
-            JsonReader jsonReader = Json.createReader(new StringReader(jsonString));
-            JsonObject jsonObject = jsonReader.readObject();
-            JsonObject playersObject = jsonObject.getJsonObject("players");
-            int onlinePlayers = playersObject.getInt("online");
-            return onlinePlayers;
-        }
-        return -1;
-    }
-
-    public static int readVarInt(ByteBuffer buffer) {
-        int value = 0;
-        int i = 0;
-        byte b;
-        do {
-            b = buffer.get();
-            value |= (b & 0x7F) << i;
-            i += 7;
-        } while ((b & 0x80) != 0);
-        return value;
-    }
-
-    public static int readVarIntOld(ByteBuffer buffer) {
-        int value = 0;
-        int i = 0;
-        while (true) {
-            byte b = buffer.get();
-            value |= (b & 0x7F) << i;
-            if ((b & 0x80) == 0) {
-                break;
+            // Читаем весь ответ в байтовый массив
+            ByteArrayOutputStream response = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                response.write(buffer, 0, bytesRead);
             }
-            i += 7;
+
+            byte[] responseBytes = response.toByteArray();
+            Bukkit.getLogger().info("Полный ответ (в hex): " + bytesToHex(responseBytes));
+
+            // Теперь попробуем интерпретировать эти байты
+            ByteArrayInputStream bais = new ByteArrayInputStream(responseBytes);
+            DataInputStream dis = new DataInputStream(bais);
+
+            int length = readVarInt(dis);
+            Bukkit.getLogger().info("Длина пакета: " + length);
+
+            int packetId = readVarInt(dis);
+            Bukkit.getLogger().info("ID пакета: " + packetId);
+
+            if (packetId != 0x00) {
+                Bukkit.getLogger().warning("Неожиданный ID пакета: " + packetId);
+                return -1;
+            }
+
+            String json = readString(dis);
+            Bukkit.getLogger().info("Полученный JSON: " + json);
+
+            JsonObject jsonObject = Json.createReader(new StringReader(json)).readObject();
+            JsonObject players = jsonObject.getJsonObject("players");
+            int online = players.getInt("online");
+            Bukkit.getLogger().info("Онлайн игроков: " + online);
+
+            return online;
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("Ошибка при получении количества онлайн игроков: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
         }
-        return value;
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X ", b));
+        }
+        return sb.toString().trim(); // Убираем последний пробел
+    }
+
+    private static void writeVarInt(DataOutputStream out, int value) throws IOException {
+        while (true) {
+            if ((value & 0xFFFFFF80) == 0) {
+                out.writeByte(value);
+                return;
+            }
+            out.writeByte(value & 0x7F | 0x80);
+            value >>>= 7;
+        }
+    }
+
+    private static int readVarInt(DataInputStream in) throws IOException {
+        int numRead = 0;
+        int result = 0;
+        byte read;
+        do {
+            read = in.readByte();
+            int value = (read & 0b01111111);
+            result |= (value << (7 * numRead));
+            numRead++;
+            if (numRead > 5) {
+                throw new RuntimeException("VarInt is too big");
+            }
+        } while ((read & 0b10000000) != 0);
+        return result;
+    }
+
+    private static void writeString(DataOutputStream out, String string) throws IOException {
+        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+        writeVarInt(out, bytes.length);
+        out.write(bytes);
+    }
+
+    private static String readString(DataInputStream in) throws IOException {
+        int length = readVarInt(in);
+        byte[] bytes = new byte[length];
+        in.readFully(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public static void vanillaTabColorUpdate(Player player) {
