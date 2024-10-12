@@ -41,6 +41,8 @@ public class LoginCommand implements CommandExecutor {
                     Lobby.players.put(player.getName(), new AuthPlayer());
                     SQLManager.add(player);
                     MySQLAccounts.authDateUpdate(player.getName());
+                    if(player.getName().equals("limeworld")) return true;
+                    if(player.getName().equalsIgnoreCase("logicatop")) return true;
                     Utils.sendTransferMessage(Lobby.instance, player, "vanilla");
                     return true;
                 case 0, -1:

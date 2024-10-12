@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LobbyPAPI">
+    <output-path>$PROJECT_DIR$/../../LaimCraft/Servers/Lobby/plugins/PlaceholderAPI/expansions</output-path>
+    <root id="archive" name="LobbyPAPI.jar">
+      <element id="module-output" name="Lobby" />
+    </root>
+  </artifact>
+</component>

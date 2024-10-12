@@ -7,6 +7,6 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 public class EntityRegainHealthEvents implements Listener {
     @EventHandler
     private void onEntityRegainHealthEvent(EntityRegainHealthEvent event) {
-        event.setCancelled(true);
+        //event.setCancelled(true);
     }
 }

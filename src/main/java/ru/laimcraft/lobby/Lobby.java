@@ -9,6 +9,7 @@ import ru.laimcraft.lobby.Commands.LoginCommand;
 import ru.laimcraft.lobby.Commands.RegisterCommand;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public final class Lobby extends JavaPlugin {
@@ -28,6 +29,7 @@ public final class Lobby extends JavaPlugin {
     @Override
     public void onDisable() {
         for(Player player : Bukkit.getOnlinePlayers()) {
+            if(player.getName().equals("limeworld")) continue;
             player.kick(Message.reloading);
         }
     }

@@ -21,6 +21,7 @@ public class EventHandler implements Listener {
         register(new PlayerDamageEvents());
         register(new EntityRegainHealthEvents());
         register(new FoodLevelChangeEvents());
+        register(new TestEvents());
     }
 
     private void register(Listener listener) {
