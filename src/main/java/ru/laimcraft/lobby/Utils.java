@@ -58,8 +58,7 @@ public class Utils {
         int port = 60421;
 
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(address, port), 5000);
-            socket.setSoTimeout(5000);
+            socket.connect(new InetSocketAddress(address, port));
 
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             InputStream in = socket.getInputStream();
@@ -88,34 +87,40 @@ public class Utils {
             }
 
             byte[] responseBytes = response.toByteArray();
-            Bukkit.getLogger().info("Полный ответ (в hex): " + bytesToHex(responseBytes));
+            Bukkit.getConsoleSender().sendMessage("Полный ответ (в hex): " + bytesToHex(responseBytes));
 
             // Теперь попробуем интерпретировать эти байты
             ByteArrayInputStream bais = new ByteArrayInputStream(responseBytes);
             DataInputStream dis = new DataInputStream(bais);
 
             int length = readVarInt(dis);
-            Bukkit.getLogger().info("Длина пакета: " + length);
+            Bukkit.getConsoleSender().sendMessage("Длина пакета: " + length);
 
             int packetId = readVarInt(dis);
-            Bukkit.getLogger().info("ID пакета: " + packetId);
+            Bukkit.getConsoleSender().sendMessage("ID пакета: " + packetId);
 
             if (packetId != 0x00) {
-                Bukkit.getLogger().warning("Неожиданный ID пакета: " + packetId);
+                Bukkit.getConsoleSender().sendMessage("Неожиданный ID пакета: " + packetId);
                 return -1;
             }
 
             String json = readString(dis);
-            Bukkit.getLogger().info("Полученный JSON: " + json);
+            Bukkit.getConsoleSender().sendMessage("Полученный JSON: " + json);
 
             JsonObject jsonObject = Json.createReader(new StringReader(json)).readObject();
             JsonObject players = jsonObject.getJsonObject("players");
             int online = players.getInt("online");
-            Bukkit.getLogger().info("Онлайн игроков: " + online);
+            Bukkit.getConsoleSender().sendMessage("Онлайн игроков: " + online);
+
+            // Добавляем проверку
+            if (online > 5000) {
+                Bukkit.getConsoleSender().sendMessage("Получено неожиданное количество онлайн игроков: " + online);
+                online = 5000;
+            }
 
             return online;
         } catch (Exception e) {
-            Bukkit.getLogger().severe("Ошибка при получении количества онлайн игроков: " + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("Ошибка при получении количества онлайн игроков: " + e.getMessage());
             e.printStackTrace();
             return -1;
         }
