@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Velocity">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../LaimCraft/Servers/Proxy/Velocity.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

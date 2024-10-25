@@ -5,10 +5,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ru.laimcraft.lobby.Utils;
 
-import java.math.BigDecimal;
-
-import static ru.laimcraft.lobby.Utils.getOnlinePillarsOfFortune;
-
 public class LobbyPAPI extends PlaceholderExpansion {
     @Override
     public @NotNull String getIdentifier() {return "lobby";}
@@ -25,6 +21,8 @@ public class LobbyPAPI extends PlaceholderExpansion {
                 } catch (Exception e) {
                     return String.valueOf(-1);
                 }
+            case "OceanWorld":
+                return String.valueOf("");
             default:
                 return "null";
         }

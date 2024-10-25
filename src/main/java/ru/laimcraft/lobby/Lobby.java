@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.laimcraft.lobby.Commands.ChangePasswordCommand;
 import ru.laimcraft.lobby.Commands.LoginCommand;
 import ru.laimcraft.lobby.Commands.RegisterCommand;
+import ru.laimcraft.lobby.net.SimpleServer;
 
 import java.util.HashMap;
 import java.util.List;
