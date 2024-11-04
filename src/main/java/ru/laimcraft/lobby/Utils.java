@@ -55,14 +55,14 @@ public class Utils {
         player.sendPluginMessage(plugin, "server:transfer", output.toByteArray());
     }
 
-    public static void sendOnlineMessage(Plugin plugin, String serverName) {
+    /*public static void sendOnlineMessage(Plugin plugin, String serverName) {
         VelocityServer velocityServer = VelocityProxy.
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("YAm3Q5pioe4q");
         output.writeUTF("online");
         output.writeUTF(serverName);
         player.sendPluginMessage(plugin, "server:transfer", output.toByteArray());
-    }
+    }*/
 
 
     public static int getOnlinePillarsOfFortune() {

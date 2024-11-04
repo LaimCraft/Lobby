@@ -1,10 +1,9 @@
-package ru.laimcraft.lobby.events;
+package ru.laimcraft.lobby.events.player;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.laimcraft.lobby.Lobby;
-import ru.laimcraft.lobby.data.mysql.SQLManager;
 
 public class PlayerQuitEvents implements Listener {
     @EventHandler

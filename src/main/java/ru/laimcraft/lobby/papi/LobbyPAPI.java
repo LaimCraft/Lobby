@@ -15,14 +15,9 @@ public class LobbyPAPI extends PlaceholderExpansion {
     public @NotNull String onPlaceholderRequest(Player player, @NotNull String params) {
         switch (params) {
             case "PillarsOfFortuneOnline":
-                int online = 0;
-                try {
-                    return String.valueOf(online = Utils.getOnlinePillarsOfFortune());
-                } catch (Exception e) {
-                    return String.valueOf(-1);
-                }
+                return "";
             case "OceanWorld":
-                return String.valueOf("");
+                return "";
             default:
                 return "null";
         }

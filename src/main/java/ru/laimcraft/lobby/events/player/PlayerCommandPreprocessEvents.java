@@ -1,4 +1,4 @@
-package ru.laimcraft.lobby.events;
+package ru.laimcraft.lobby.events.player;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
