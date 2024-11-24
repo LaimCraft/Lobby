@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import ru.laimcraft.lobby.Online;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,17 @@ public class Menu {
 
     public static void open(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.DARK_GREEN + "Выбор сервера");
-        inventory.setItem(10, createServerItem(Material.GRASS_BLOCK, "vanilla", ChatColor.DARK_GREEN + "Vanilla", getVanillaLore()));
-        inventory.setItem(12, createServerItem(Material.COAL_ORE, "roleplay", ChatColor.DARK_GREEN + "Role Play", getRolePlayLore()));
+
+        inventory.setItem(10, createServerItem(
+                Material.GRASS_BLOCK,
+                "vanilla",
+                ChatColor.DARK_GREEN + "Vanilla " + ChatColor.RED + Online.get("vanilla"),
+                getVanillaLore()));
+
+        inventory.setItem(12, createServerItem(
+                Material.COAL_ORE, "roleplay",
+                ChatColor.DARK_GREEN + "Role Play " + ChatColor.RED + Online.get("roleplay"),
+                getRolePlayLore()));
         player.openInventory(inventory);
     }
 

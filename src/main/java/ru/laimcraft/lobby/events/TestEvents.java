@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import ru.laimcraft.lobby.components.Locations;
 
 public class TestEvents implements Listener {
-    Location location;
+    /*Location location;
 
     @EventHandler
     private void eventJump(PlayerToggleSneakEvent event) {
@@ -22,14 +22,14 @@ public class TestEvents implements Listener {
     private void onPlayerMoveToJump(PlayerMoveEvent event) {
 
     }
-
+*/
     @EventHandler
     private void onMovement(PlayerMoveEvent event) {
         if(event.getTo().getBlock().getType() != Material.WATER) return;
         event.getPlayer().teleport(Locations.spawnLocation);
     }
 
-    @EventHandler
+    /*@EventHandler
     private void onJump(PlayerJumpEvent event) {
         if(spawnJumpTpLocation(event)) {
             //event.setCancelled(true);
@@ -59,5 +59,5 @@ public class TestEvents implements Listener {
         if(block.getZ() < 252 || block.getZ() > 254) return false;
         event.getPlayer().teleport(Locations.spawnJumpTpBackLocation);
         return true;
-    }
+    }*/
 }

@@ -5,6 +5,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.laimcraft.lobby.Commands.ChangePasswordCommand;
+import ru.laimcraft.lobby.Commands.EcoCommand;
 import ru.laimcraft.lobby.Commands.LoginCommand;
 import ru.laimcraft.lobby.Commands.RegisterCommand;
 import ru.laimcraft.lobby.net.SimpleServer;
@@ -25,6 +26,7 @@ public final class Lobby extends JavaPlugin {
         Objects.requireNonNull(getCommand("login")).setExecutor(new LoginCommand());
         Objects.requireNonNull(getCommand("register")).setExecutor(new RegisterCommand());
         Objects.requireNonNull(getCommand("changepassword")).setExecutor(new ChangePasswordCommand());
+        Objects.requireNonNull(getCommand("eco")).setExecutor(new EcoCommand());
     }
 
     @Override

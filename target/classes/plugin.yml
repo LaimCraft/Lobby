@@ -17,3 +17,7 @@ commands:
     aliases:
       - ch
     usage: '/changepassword <old_password> <new_password>'
+  eco:
+    aliases:
+      - eco
+    usage: '/eco'

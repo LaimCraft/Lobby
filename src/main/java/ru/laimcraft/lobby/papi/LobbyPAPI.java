@@ -1,8 +1,10 @@
 package ru.laimcraft.lobby.papi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import ru.laimcraft.lobby.Online;
 import ru.laimcraft.lobby.Utils;
 
 public class LobbyPAPI extends PlaceholderExpansion {
@@ -14,10 +16,10 @@ public class LobbyPAPI extends PlaceholderExpansion {
     public @NotNull String getVersion() {return "1.0.0";}
     public @NotNull String onPlaceholderRequest(Player player, @NotNull String params) {
         switch (params) {
-            case "PillarsOfFortuneOnline":
-                return "";
-            case "OceanWorld":
-                return "";
+            case "online_roleplay":
+                return String.valueOf(Online.get("roleplay"));
+            case "online_vanilla":
+                return String.valueOf(Online.get("roleplay"));
             default:
                 return "null";
         }

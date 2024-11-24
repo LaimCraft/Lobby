@@ -23,6 +23,8 @@ public class EventHandler implements Listener {
         register(new NPCInteract());
         register(new onInventoryClickEvent());
         register(new onPlayerInteractEvent());
+        register(new onPlayerDropItemEvent());
+        register(new OnlineListener());
     }
 
     private void register(Listener listener) {
