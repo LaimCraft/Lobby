@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ru.laimcraft.lobby.Online;
 import ru.laimcraft.lobby.Utils;
+import ru.laimcraft.lobby.api.Server;
 
 public class LobbyPAPI extends PlaceholderExpansion {
     @Override
@@ -17,9 +18,9 @@ public class LobbyPAPI extends PlaceholderExpansion {
     public @NotNull String onPlaceholderRequest(Player player, @NotNull String params) {
         switch (params) {
             case "online_roleplay":
-                return String.valueOf(Online.get("roleplay"));
+                return String.valueOf(Online.get(Server.ROLEPLAY));
             case "online_vanilla":
-                return String.valueOf(Online.get("roleplay"));
+                return String.valueOf(Online.get(Server.VANILLA));
             default:
                 return "null";
         }

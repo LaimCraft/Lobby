@@ -1,63 +1,51 @@
 package ru.laimcraft.lobby;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import ru.laimcraft.lobby.api.Server;
+import ru.laimcraft.lobby.api.online.ServerListPing17;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Online {
+    static List<ServerListPing17> servers = new ArrayList<>();
+    static HashMap<Server, Integer> online = new HashMap<>();
 
-    protected static final String server = "lobby";
+    static {
+        online.put(Server.PROXY, 0);
+        online.put(Server.LOBBY, 0);
+        online.put(Server.VANILLA, 0);
+        online.put(Server.ROLEPLAY, 0);
 
-    public static String get(String server) {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT `online` FROM `laimcraft`.`servers` WHERE server = '"+server+"';");
-            while (resultSet.next()) {
-                return resultSet.getString(1);
+        servers.add(new ServerListPing17((server, statusResponse) -> {
+            online.replace(server, statusResponse.getPlayers().getOnline());
+        }, Server.PROXY));
+
+        servers.add(new ServerListPing17((server, statusResponse) -> {
+            online.replace(server, statusResponse.getPlayers().getOnline());
+        }, Server.LOBBY));
+
+        servers.add(new ServerListPing17((server, statusResponse) -> {
+            online.replace(server, statusResponse.getPlayers().getOnline());
+        }, Server.VANILLA));
+
+        servers.add(new ServerListPing17((server, statusResponse) -> {
+            online.replace(server, statusResponse.getPlayers().getOnline());
+        }, Server.ROLEPLAY));
+    }
+
+    public Online() {
+        Bukkit.getAsyncScheduler().runAtFixedRate(Lobby.instance, scheduledTask -> {
+            for(ServerListPing17 serverListPing17 : servers) {
+                serverListPing17.acceptAsync();
             }
-            return null;
-        } catch (Exception ex) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "MySQL ERROR: " + ex);
-            return null;
-        }
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
-    public static void add() {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`servers` SET `online` = online + 1 WHERE server = '"+server+"';");
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Bukkit.getConsoleSender().sendMessage("LaimCraft -> MySQL Error: " + ex.toString());
-        }
-    }
-
-    public static void remove() {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`servers` SET `online` = online - 1 WHERE server = '"+server+"';");
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Bukkit.getConsoleSender().sendMessage("LaimCraft -> MySQL Error: " + ex.toString());
-        }
-    }
-
-    public static void set(int i) {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`servers` SET `online` = "+i+" WHERE server = '"+server+"';");
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Bukkit.getConsoleSender().sendMessage("LaimCraft -> MySQL Error: " + ex.toString());
-        }
-    }
-
-    public static void reset() {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`servers` SET `online` = 0 WHERE server = '"+server+"';");
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Bukkit.getConsoleSender().sendMessage("LaimCraft -> MySQL Error: " + ex.toString());
-        }
+    public static int get(Server server) {
+        return online.get(server);
     }
 }

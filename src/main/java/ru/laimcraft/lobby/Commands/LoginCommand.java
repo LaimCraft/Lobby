@@ -11,9 +11,9 @@ import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
 import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
-import ru.laimcraft.lobby.data.mysql.SQLManager;
 
 public class LoginCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, String[] args) {
         if(!(sender instanceof Player player)) return true;
@@ -22,7 +22,7 @@ public class LoginCommand implements CommandExecutor {
             if(args[0] == null || args[0].isEmpty()) return true;
             if(args[0].length() > 48) {
                 player.sendMessage(Message.passwordMaxLength);
-            return true;}
+                return true;}
             String login = MySQLAccounts.getLogin(player.getName());
             switch (login) {
                 case null:
@@ -39,11 +39,8 @@ public class LoginCommand implements CommandExecutor {
                 case 1:
                     player.sendMessage(Message.auth);
                     Lobby.players.put(player.getName(), new AuthPlayer());
-                    SQLManager.add(player);
                     MySQLAccounts.authDateUpdate(player.getName());
-                    if(player.getName().equals("limeworld")) return true;
-                    if(player.getName().equalsIgnoreCase("logicatop")) return true;
-                    Utils.sendTransferMessage(Lobby.instance, player, "vanilla");
+                    Utils.sendLoginMessage(Lobby.instance, player);
                     return true;
                 case 0, -1:
                     player.kick(Message.noPassword);

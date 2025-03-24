@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="plugins">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../laimcraft/servers/lobby/plugins" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../laimcraft/servers/lobby/plugins" recursive="false" />
+  </library>
+</component>

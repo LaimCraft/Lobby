@@ -24,6 +24,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 public class Utils {
+
     public static String getSHA512(String input){
         String toReturn = null; try {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -52,7 +53,15 @@ public class Utils {
         output.writeUTF("transfer");
         output.writeUTF(serverName);
         output.writeUTF(player.getName());
-        player.sendPluginMessage(plugin, "server:transfer", output.toByteArray());
+        player.sendPluginMessage(plugin, "laimcraft:proxy", output.toByteArray());
+    }
+
+    public static void sendLoginMessage(Plugin plugin, Player player) {
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeUTF("YAm3Q5pioe4q");
+        output.writeUTF("login");
+        output.writeUTF(player.getName());
+        player.sendPluginMessage(plugin, "laimcraft:proxy", output.toByteArray());
     }
 
     /*public static void sendOnlineMessage(Plugin plugin, String serverName) {

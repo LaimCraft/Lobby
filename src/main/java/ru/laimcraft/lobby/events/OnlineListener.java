@@ -11,16 +11,13 @@ public class OnlineListener implements Listener {
 
     @EventHandler
     private void onJoin(PlayerJoinEvent event) {
-        Online.add();
     }
 
     @EventHandler
     private void onQuit(PlayerQuitEvent event) {
-        Online.remove();
     }
 
     @EventHandler
     private void onReload(ServerLoadEvent event) {
-        Online.reset();
     }
 }
