@@ -93,5 +93,19 @@
             <artifactId>javax.json-api</artifactId>
             <version>1.1.4</version>
         </dependency>
+        <dependency>
+            <groupId>ru.laimcraft</groupId>
+            <artifactId>Proxy</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>E:\LaimCraft\servers\proxy\plugins\Proxy.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>npc</groupId>
+            <artifactId>npc</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>E:\LaimCraft\servers\lobby\plugins\Citizens.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

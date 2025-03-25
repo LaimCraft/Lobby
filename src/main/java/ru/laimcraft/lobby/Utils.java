@@ -1,10 +1,7 @@
 package ru.laimcraft.lobby;
 
-import com.destroystokyo.paper.proxy.VelocityProxy;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.velocitypowered.proxy.VelocityServer;
-import net.kyori.adventure.audience.ForwardingAudience;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -49,7 +46,6 @@ public class Utils {
 
     public static void sendTransferMessage(Plugin plugin, Player player, String serverName) {
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        output.writeUTF("YAm3Q5pioe4q");
         output.writeUTF("transfer");
         output.writeUTF(serverName);
         output.writeUTF(player.getName());
@@ -58,7 +54,6 @@ public class Utils {
 
     public static void sendLoginMessage(Plugin plugin, Player player) {
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        output.writeUTF("YAm3Q5pioe4q");
         output.writeUTF("login");
         output.writeUTF(player.getName());
         player.sendPluginMessage(plugin, "laimcraft:proxy", output.toByteArray());
