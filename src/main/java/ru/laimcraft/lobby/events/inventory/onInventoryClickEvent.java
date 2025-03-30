@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.menu.Menu;
+import ru.laimcraft.lobby.rpc.RPC;
 
 public class onInventoryClickEvent implements Listener {
 
@@ -23,6 +24,6 @@ public class onInventoryClickEvent implements Listener {
     private void serverTeleport(InventoryClickEvent event) {
         String server = event.getCurrentItem().getPersistentDataContainer().get(Menu.menuServerTeleport, PersistentDataType.STRING);
         if(server == null || server.isEmpty()) return;
-        Utils.sendTransferMessage(Lobby.instance, (Player) event.getWhoClicked(), server);
+        RPC.sendMessage(String.format("transfer %s %s", event.getWhoClicked().getName(), server));
     }
 }

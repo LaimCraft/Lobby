@@ -44,7 +44,7 @@ public class Utils {
         if(!Character.isDigit(Integer.charAt(0))) return false;
         return true;}
 
-    public static void sendTransferMessage(Plugin plugin, Player player, String serverName) {
+    /*public static void sendTransferMessage(Plugin plugin, Player player, String serverName) {
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("transfer");
         output.writeUTF(serverName);
@@ -57,7 +57,7 @@ public class Utils {
         output.writeUTF("login");
         output.writeUTF(player.getName());
         player.sendPluginMessage(plugin, "laimcraft:proxy", output.toByteArray());
-    }
+    }*/
 
     /*public static void sendOnlineMessage(Plugin plugin, String serverName) {
         VelocityServer velocityServer = VelocityProxy.

@@ -11,6 +11,7 @@ import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
 import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
+import ru.laimcraft.lobby.rpc.RPC;
 
 public class LoginCommand implements CommandExecutor {
 
@@ -40,7 +41,7 @@ public class LoginCommand implements CommandExecutor {
                     player.sendMessage(Message.auth);
                     Lobby.players.put(player.getName(), new AuthPlayer());
                     MySQLAccounts.authDateUpdate(player.getName());
-                    Utils.sendLoginMessage(Lobby.instance, player);
+                    RPC.sendMessage(String.format("login %s", player.getName()));
                     return true;
                 case 0, -1:
                     player.kick(Message.noPassword);

@@ -9,6 +9,7 @@ import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
 import ru.laimcraft.lobby.Utils;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
+import ru.laimcraft.lobby.rpc.RPC;
 
 public class RegisterCommand implements CommandExecutor {
 
@@ -47,7 +48,7 @@ public class RegisterCommand implements CommandExecutor {
                     default:
                         player.sendMessage(Message.registerSuccess);
                         Lobby.players.put(player.getName(), new AuthPlayer());
-                        Utils.sendLoginMessage(Lobby.instance, player);
+                        RPC.sendMessage(String.format("login %s", player.getName()));
                         return true;
                 }
             }
@@ -62,7 +63,7 @@ public class RegisterCommand implements CommandExecutor {
                 default:
                     player.sendMessage(Message.registerSuccess);
                     Lobby.players.put(player.getName(), new AuthPlayer());
-                    Utils.sendLoginMessage(Lobby.instance, player);
+                    RPC.sendMessage(String.format("login %s", player.getName()));
                     return true;
             }
         }
