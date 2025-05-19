@@ -18,12 +18,6 @@ public class PlayerJoinEvents implements Listener {
         event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0, true, false));
 
         event.getPlayer().teleport(Locations.spawnLocation);
-
-        String login = MySQLAccounts.getLogin(event.getPlayer().getName());
-        if(login == null) {
-            event.getPlayer().sendMessage(Message.registerSendMessage);
-            return;}
-        event.getPlayer().sendMessage(Message.loginSendMessage);
         return;
     }
 }

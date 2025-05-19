@@ -43,7 +43,7 @@ public class Menu {
 
         inventory.setItem(12, createServerItem(
                 Material.COAL_ORE, "roleplay",
-                ChatColor.DARK_GREEN + "Role Play " + ChatColor.DARK_RED + "только 1.21.1 " + ChatColor.RED + Online.get(Server.ROLEPLAY),
+                ChatColor.DARK_GREEN + "Role Play " + ChatColor.RED + Online.get(Server.ROLEPLAY),
                 getRolePlayLore()));
         player.openInventory(inventory);
     }
