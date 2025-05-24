@@ -3,14 +3,20 @@ package ru.laimcraft.lobby.rpc;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import ru.laimcraft.lobby.AuthPlayer;
 import ru.laimcraft.lobby.Lobby;
 
 import java.net.SocketException;
+import java.util.Optional;
 
 @io.netty.channel.ChannelHandler.Sharable
 public class ChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
+
+    static final String messageToPlayer = "message-to-player";
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -39,6 +45,12 @@ public class ChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 case "login":
                     String login = args[1];
                     Lobby.players.put(login, new AuthPlayer());
+                    return;
+                case messageToPlayer:
+                    Optional.ofNullable(Bukkit.getPlayer(args[1])).ifPresent((player -> {
+                        Component message = GsonComponentSerializer.gson().deserialize(msg.replaceFirst(messageToPlayer + " " + args[1] + " ", ""));
+                        player.sendMessage(message);
+                    }));
                     return;
                 default:
                     return;
