@@ -3,6 +3,7 @@ package ru.laimcraft.lobby.api;
 public enum Server {
     ROLEPLAY("RolePlay", "localhost", 60250),
     VANILLA("Vanilla", "localhost", 60120),
+    GRIF("Grif", "localhost", 60450),
     LOBBY("Lobby", "localhost", 60100),
     PROXY("Proxy", "localhost", 25566);
 

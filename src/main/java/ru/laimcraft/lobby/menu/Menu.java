@@ -45,6 +45,17 @@ public class Menu {
                 Material.COAL_ORE, "roleplay",
                 ChatColor.DARK_GREEN + "Role Play " + ChatColor.RED + Online.get(Server.ROLEPLAY),
                 getRolePlayLore()));
+
+        inventory.setItem(14, createServerItem(
+                Material.TNT, "grif",
+                ChatColor.DARK_GREEN + "Grif " + ChatColor.RED + Online.get(Server.GRIF),
+                getGrifLore()));
+
+        inventory.setItem(16, createServerItem(
+                Material.LIGHT, "skyblock",
+                ChatColor.DARK_GREEN + "Sky Block",
+                getSkyBlock()));
+
         player.openInventory(inventory);
     }
 
@@ -83,6 +94,23 @@ public class Menu {
         lore.add(ChatColor.GOLD + "полную увлекательных событий и возможностей.");
         lore.add(ChatColor.AQUA + "Наш Discord сервер: https://discord.gg/U7D8vzK6XS");
         lore.add(ChatColor.DARK_AQUA + "Discord сервер проекта");
+        return lore;
+    }
+
+    private static List<String> getGrifLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Добро пожаловать на Гриф");
+        lore.add(ChatColor.GRAY + "Здесь вы можете делать что угодно с базами других игроков");
+        lore.add(ChatColor.GRAY + "Однако использование читов наказуемо блокировкой аккаунта");
+        lore.add(ChatColor.AQUA + "Наш Discord сервер: https://discord.gg/U7D8vzK6XS");
+        lore.add(ChatColor.DARK_AQUA + "Discord сервер проекта");
+        return lore;
+    }
+
+    private static List<String> getSkyBlock() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.DARK_AQUA + "В разработке");
+        lore.add(ChatColor.DARK_AQUA + "Планируется но разработка ещё не была начата");
         return lore;
     }
 }

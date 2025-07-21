@@ -19,6 +19,7 @@ public class Online {
         online.put(Server.LOBBY, 0);
         online.put(Server.VANILLA, 0);
         online.put(Server.ROLEPLAY, 0);
+        online.put(Server.GRIF, 0);
 
         servers.add(new ServerListPing17((server, statusResponse) -> {
             online.replace(server, statusResponse.getPlayers().getOnline());
@@ -35,6 +36,10 @@ public class Online {
         servers.add(new ServerListPing17((server, statusResponse) -> {
             online.replace(server, statusResponse.getPlayers().getOnline());
         }, Server.ROLEPLAY));
+
+        servers.add(new ServerListPing17((server, statusResponse) -> {
+            online.replace(server, statusResponse.getPlayers().getOnline());
+        }, Server.GRIF));
     }
 
     public Online() {
