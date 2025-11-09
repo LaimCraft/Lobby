@@ -10,6 +10,7 @@ import ru.laimcraft.lobby.AuthPlayer;
 import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
 import ru.laimcraft.lobby.Utils;
+import ru.laimcraft.lobby.api.Notification;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
 import ru.laimcraft.lobby.rpc.RPC;
 
@@ -37,11 +38,12 @@ public class LoginCommand implements CommandExecutor {
                     break;}
             short result = MySQLAccounts.auth(player.getName(), args[0]);
             switch (result) {
-                case 1:
+                case 1: // Успешный вход в аккаунт
                     player.sendMessage(Message.auth);
                     Lobby.players.put(player.getName(), new AuthPlayer());
                     MySQLAccounts.authDateUpdate(player.getName());
                     RPC.sendMessage(String.format("login %s", player.getName()));
+                    Notification.sendLogicMessage(player.getName());
                     return true;
                 case 0, -1:
                     player.kick(Message.noPassword);

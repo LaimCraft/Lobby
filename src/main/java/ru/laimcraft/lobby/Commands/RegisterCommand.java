@@ -8,6 +8,7 @@ import ru.laimcraft.lobby.AuthPlayer;
 import ru.laimcraft.lobby.Lobby;
 import ru.laimcraft.lobby.Message;
 import ru.laimcraft.lobby.Utils;
+import ru.laimcraft.lobby.api.Notification;
 import ru.laimcraft.lobby.data.mysql.MySQLAccounts;
 import ru.laimcraft.lobby.rpc.RPC;
 
@@ -60,10 +61,11 @@ public class RegisterCommand implements CommandExecutor {
                 case "ex":
                     player.kick(Message.kickError);
                     return true;
-                default:
+                default: // Успешная регистрация аккаунта
                     player.sendMessage(Message.registerSuccess);
                     Lobby.players.put(player.getName(), new AuthPlayer());
                     RPC.sendMessage(String.format("login %s", player.getName()));
+                    Notification.sendRegisterMessage(player.getName());
                     return true;
             }
         }
