@@ -21,6 +21,8 @@ public class LobbyPAPI extends PlaceholderExpansion {
                 return String.valueOf(Online.get(Server.ROLEPLAY));
             case "online_vanilla":
                 return String.valueOf(Online.get(Server.VANILLA));
+            case "online_grif":
+                return String.valueOf(Online.get(Server.GRIF));
             default:
                 return "null";
         }
