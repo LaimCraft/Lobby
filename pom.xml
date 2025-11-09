@@ -105,5 +105,12 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.113.Final</version>
         </dependency>
+        <dependency>
+            <groupId>ru.laimcraft.api</groupId>
+            <artifactId>API</artifactId>
+            <scope>system</scope>
+            <version>1</version>
+            <systemPath>E:\LaimCraft\API\API.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

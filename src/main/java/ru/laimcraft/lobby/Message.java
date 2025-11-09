@@ -2,6 +2,7 @@ package ru.laimcraft.lobby;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.jetbrains.annotations.NotNull;
 
 import static ru.laimcraft.lobby.Color.*;
 
@@ -24,6 +25,12 @@ public class Message {
     public static final Component loginSendMessage =
             Component.text("Для авторизации введите в чат /login <Пароль>")
                     .color(TextColor.color(YELLOW.getColor()));
+    public static final Component changePasswordSendMessage =
+            Component.text("Для смены пароля введите /changepassword <Старый пароль> <Новый пароль>")
+                    .color(TextColor.color(YELLOW.getColor()));
+    public static final Component changePasswordCommandIncorrectSendMessage =
+            Component.text("Вы неверно ввели команду введите /changepassword <Старый пароль> <Новый пароль>")
+                    .color(TextColor.color(RED.getColor()));
     public static final Component AccountCreated =
             Component.text("Вы уже зарегистрировались!")
                     .color(TextColor.color(GREEN.getColor()));

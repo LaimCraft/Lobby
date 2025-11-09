@@ -27,7 +27,7 @@ public class MySQLAccounts {
     public static String getLogin(String login) {
         try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT `login` FROM `laimcraft`.`accounts` WHERE login = '"+login+"';");
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 return resultSet.getString(1);
             }return null;
         } catch (SQLException ex) {
@@ -35,17 +35,38 @@ public class MySQLAccounts {
             return "ex";}}
 
     public static short auth(String login, String password) {
-        try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
-            String passwordHash = Utils.getSHA512(password);
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT `login` FROM `laimcraft`.`accounts` " +
-                    "WHERE login = '"+login+"' AND password = '" + passwordHash + "';");
-            while (resultSet.next()) {
-                if(login.equals(resultSet.getString(1))) return 1;
-                return 0;
-            }return -1;
-        } catch (SQLException ex) {
-            Bukkit.getConsoleSender().sendMessage(Message.getError(ex.getMessage()));
-            return -2;}}
+        try (Connection connection = DriverManager.getConnection(ru.laimcraft.lobby.Settings.host, Settings.user, Settings.password);
+        PreparedStatement ps = connection.prepareStatement("SELECT `login` FROM `laimcraft`.`accounts` WHERE login = ? AND password = ?;")) {
+            ps.setString(1, login);
+            ps.setString(2, password);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    if(login.equals(rs.getString(1))) return 1;
+                    return 0;
+                } return -1;
+            }
+        } catch (SQLException e) {
+            return -2;
+        }
+    }
+
+    public static short changePassword(String login, String password) {
+        try (Connection connection = DriverManager.getConnection(ru.laimcraft.lobby.Settings.host, Settings.user, Settings.password);
+             PreparedStatement ps = connection.prepareStatement("UPDATE `laimcraft`.`accounts` SET `password` = ? WHERE (`login` = ?);")) {
+            ps.setString(1, password);
+            ps.setString(2, login);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if(rs.next()) {
+                    if(login.equals(rs.getString(1))) return 1;
+                    return 0;
+                } return -1;
+            }
+        } catch (SQLException e) {
+            return -2;
+        }
+    }
 
     public static boolean authDateUpdate(String login) {
         try (Connection connection = DriverManager.getConnection(Settings.host, Settings.user, Settings.password)) {
